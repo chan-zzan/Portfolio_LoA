@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a9471e3dc57b6048bf83dd9604424c7, type: 3}
+  m_Name: 11_HPBoost
+  m_EditorClassIdentifier: 
+  Name: 11
+  Sprite: {fileID: 21300000, guid: 1fcf9ab9985e9d2428fd2d55ef635640, type: 3}
