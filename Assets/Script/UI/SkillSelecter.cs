@@ -13,12 +13,14 @@ public class SkillSelecter : MonoBehaviour
     [SerializeField] List<RectTransform> SlotObjects; // 스킬 이미지를 담고 있는 오브젝트
     [SerializeField] List<Sprite> UsingSprites; // 사용되는 sprite
 
-    float slotSpeed = 6000.0f;
+    //float slotSpeed = 6000.0f;
 
-    int playSlotNum = 0;
-    int stopSlotNum = -1;
+    //int playSlotNum = 0;
+    //int stopSlotNum = -1;
 
-    bool play = false;
+    //bool play = false;
+
+    int perSlotItemNum = 5; // 슬롯당 아이템 개수
 
     int skillNum = 0; // 가지고 있는 스킬 개수
 
@@ -26,9 +28,9 @@ public class SkillSelecter : MonoBehaviour
     {
         GameManager.Instance.PauseScene(); // 게임 일시정지
 
-        play = true;
-        playSlotNum = 0;
-        stopSlotNum = -1;
+        //play = true;
+        //playSlotNum = 0;
+        //stopSlotNum = -1;
 
         foreach (Button btn in this.GetComponentsInChildren<Button>())
         {
@@ -41,34 +43,53 @@ public class SkillSelecter : MonoBehaviour
             UsingSprites.Add(SkillData[i].GetSprite()); // 스킬들의 sprite 정보를 가져옴
         }
 
-        SlotSpriteSetting();
-        StartCoroutine(StopControl(playSlotNum));
+        SlotSpriteSetting(); // 랜덤으로 sprite 세팅
+
+        // 슬롯을 돌림
+        StartCoroutine(SlotRotating(0, 1, 4));
+        //StartCoroutine(SlotRotating(1, 5, 8));
+        //StartCoroutine(SlotRotating(2, 3, 12));
     }
 
-    private void FixedUpdate()
+    IEnumerator SlotRotating(int slotNum, int stopPos, int rotateNum)
     {
-        if (play)
+        for (int i = 0; i < (perSlotItemNum * rotateNum * 2) + (stopPos * 2); i++) // (슬롯당 아이템 개수 x 회전수 x 그림이 바뀌는 횟수) + 멈출 위치(2단위)
         {
-            PlaySlot();
+            SlotObjects[slotNum].anchoredPosition3D -= new Vector3(0, 125.0f, 0);
+
+            if (SlotObjects[slotNum].anchoredPosition3D.y <= 125.0f)
+            {
+                SlotObjects[slotNum].anchoredPosition3D += new Vector3(0, 1250.0f, 0);
+            }
+
+            yield return null;
         }
 
-        if (stopSlotNum >= 0)
+        SlotObjects[slotNum].GetComponent<Animator>().enabled = true;
+        SlotObjects[slotNum].GetComponent<Animator>().SetTrigger("stop");
+
+        if (slotNum == 2)
         {
-            //StopSlot();
+            foreach (Button btn in this.GetComponentsInChildren<Button>())
+            {
+                // 스킬 버튼 활성화
+                btn.interactable = true;
+            }
         }
 
     }
 
+    /*
     IEnumerator StopControl(int slotNum)
     {
         if (slotNum == 0)
         {
-            // 처음 시작할때는 조금 더 대기
-            yield return new WaitForSecondsRealtime(2.5f);
+            //처음 시작할때는 조금 더 대기
+           yield return new WaitForSecondsRealtime(2.5f);
         }
         else
         {
-            // 처음 이후에는 빠르게 진행
+            //처음 이후에는 빠르게 진행
             yield return new WaitForSecondsRealtime(1.2f);
         }
 
@@ -81,20 +102,21 @@ public class SkillSelecter : MonoBehaviour
         {
             float delta = Time.unscaledDeltaTime * stopSpeed;
 
-            if (slotPos.y <= 100.0f)
+            slotPos.y -= delta;
+
+            while (slotPos.y <= 100.0f)
             {
-                //print(slotNum + " : " + "a");
+                print(slotNum + " : " + "a");
                 slotPos.y += 1250.0f;
             }
 
-            slotPos.y -= delta;
             SlotObjects[slotNum].anchoredPosition3D = slotPos;
 
             stopSpeed -= Time.unscaledDeltaTime * 6000;
 
             yield return null;
         }
-        //print(slotNum + " : " + SlotObjects[slotNum].anchoredPosition3D.y);
+        print(slotNum + " : " + SlotObjects[slotNum].anchoredPosition3D.y);
 
         stopSlotNum++;
 
@@ -109,7 +131,9 @@ public class SkillSelecter : MonoBehaviour
             stopSlotNum++; // 더이상 슬롯이 동작 안함
         }
     }
+    */
 
+    /*
     void PlaySlot()
     {
         if (playSlotNum > 3)
@@ -117,47 +141,49 @@ public class SkillSelecter : MonoBehaviour
             play = false;
         }
 
-        // 슬롯을 돌림
+        //슬롯을 돌림
         for (int slotNum = playSlotNum; slotNum < SlotObjects.Count; slotNum++)
         {
             Vector3 slotPos = SlotObjects[slotNum].anchoredPosition3D;
 
-            if (slotPos.y <= 100.0f)
+            slotPos.y -= Time.unscaledDeltaTime * slotSpeed;
+
+            while (slotPos.y <= 100.0f)
             {
                 slotPos.y += 1250.0f;
             }
-
-            slotPos.y -= Time.unscaledDeltaTime * slotSpeed;   
 
             SlotObjects[slotNum].anchoredPosition3D = slotPos;
         }
 
     }
+    */
 
+    /*
     void StopSlot()
     {
         if (stopSlotNum < 3)
         {
-            // 슬롯을 멈춤
+            //슬롯을 멈춤
             Vector3 curPos = SlotObjects[stopSlotNum].anchoredPosition3D; // 현재위치
 
             if (curPos.y % 250 != 0)
             {
-                // 슬롯의 위치 오차 설정
+                //슬롯의 위치 오차 설정
                 if (curPos.y % 250 > 125.0f)
                 {
-                    // slot up -> 슬롯이 위로 이동하면서 칸에 딱 맞춰짐
+                    //slot up -> 슬롯이 위로 이동하면서 칸에 딱 맞춰짐
                     curPos.y += Time.unscaledDeltaTime * 100.0f;
 
                     if (curPos.y % 250 >= 248)
-                    {                        
+                    {
                         curPos.y = 250 * ((int)(curPos.y / 250) + 1);
                         ActiveSkillButton(); // 스킬 버튼 활성화
                     }
                 }
                 else if (curPos.y % 250 <= 125.0f)
                 {
-                    // slot down -> 슬롯이 아래로 이동하면서 칸에 딱 맞춰짐
+                    //slot down -> 슬롯이 아래로 이동하면서 칸에 딱 맞춰짐
                     curPos.y -= Time.unscaledDeltaTime * 100.0f;
 
                     if (curPos.y % 250 <= 2)
@@ -169,8 +195,9 @@ public class SkillSelecter : MonoBehaviour
 
                 SlotObjects[stopSlotNum].anchoredPosition3D = curPos;
             }
-        }        
+        }
     }
+    */
 
     void SlotSpriteSetting()
     {
@@ -196,6 +223,7 @@ public class SkillSelecter : MonoBehaviour
         }
     }
 
+    /*
     void ActiveSkillButton()
     {
         if (stopSlotNum == 2)
@@ -207,6 +235,7 @@ public class SkillSelecter : MonoBehaviour
             }
         }
     }
+    */
 
     public void SelectSkill(int slotNum)
     {
