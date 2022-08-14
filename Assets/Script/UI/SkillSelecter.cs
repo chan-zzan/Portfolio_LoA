@@ -47,8 +47,8 @@ public class SkillSelecter : MonoBehaviour
 
         // 슬롯을 돌림
         StartCoroutine(SlotRotating(0, 1, 4));
-        //StartCoroutine(SlotRotating(1, 5, 8));
-        //StartCoroutine(SlotRotating(2, 3, 12));
+        StartCoroutine(SlotRotating(1, 4, 8));
+        StartCoroutine(SlotRotating(2, 3, 12));
     }
 
     IEnumerator SlotRotating(int slotNum, int stopPos, int rotateNum)
@@ -65,8 +65,8 @@ public class SkillSelecter : MonoBehaviour
             yield return null;
         }
 
+        // 멈출 때 슬롯 애니메이션 이용
         SlotObjects[slotNum].GetComponent<Animator>().enabled = true;
-        SlotObjects[slotNum].GetComponent<Animator>().SetTrigger("stop");
 
         if (slotNum == 2)
         {
