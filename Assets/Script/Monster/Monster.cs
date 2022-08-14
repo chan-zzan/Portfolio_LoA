@@ -257,13 +257,13 @@ public abstract class Monster : AIProperty
         // -5.0 < z < 9.0 : AreaRange_Z
 
         Vector3 basePos = this.transform.parent.position;
-        print(this.name + " basePos: " + basePos);
+        //print(this.name + " basePos: " + basePos);
 
         Vector2 curAreaRange_X = new Vector2(basePos.x, basePos.x) + AreaRange_X;
         Vector2 curAreaRange_Z = new Vector2(basePos.z, basePos.z) + AreaRange_Z;
 
-        print(this.name + " AreaRange_X: " + curAreaRange_X);
-        print(this.name + " AreaRange_Z: " + curAreaRange_Z);
+        //print(this.name + " AreaRange_X: " + curAreaRange_X);
+        //print(this.name + " AreaRange_Z: " + curAreaRange_Z);
 
         if (randomPos.x < curAreaRange_X.x)
         {
@@ -285,8 +285,6 @@ public abstract class Monster : AIProperty
             // z축 양의 방향으로 제한 범위를 넘어간 경우
             randomPos.z = curAreaRange_Z.y;
         }
-
-        print(this.name+  " : " + randomPos);
     }
 
     void Roaming()

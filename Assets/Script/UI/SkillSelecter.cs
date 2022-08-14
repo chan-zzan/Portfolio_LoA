@@ -26,6 +26,13 @@ public class SkillSelecter : MonoBehaviour
 
     private void OnEnable()
     {
+        // 애니메이션 끔
+        for (int i = 0; i < SlotObjects.Count; i++)
+        {
+            SlotObjects[i].GetComponent<Animator>().enabled = false;
+        }
+
+
         GameManager.Instance.PauseScene(); // 게임 일시정지
 
         //play = true;

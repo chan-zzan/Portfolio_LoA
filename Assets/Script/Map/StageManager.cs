@@ -66,9 +66,6 @@ public class StageManager : MonoBehaviour
     [SerializeField]
     GameObject MiddleBoss;
 
-    [SerializeField]
-    GameObject Angel;
-
     private void Start()
     {
         CurStage = StartStage;
@@ -149,9 +146,9 @@ public class StageManager : MonoBehaviour
                 rndIndex = Random.Range(0, AngelStage.Count);
                 player.position = AngelStage[rndIndex].position;
 
-                // Angel Stage -> 천사생성
-                GameObject boss = Instantiate(Angel, AngelStage[rndIndex]);
-                boss.transform.position = AngelStage[rndIndex].position + new Vector3(0, 0, 0);
+                //// Angel Stage -> 천사생성
+                //GameObject boss = Instantiate(Angel, AngelStage[rndIndex]);
+                //boss.transform.position = AngelStage[rndIndex].position + new Vector3(0, 0, 0);
 
                 // 현재 스테이지 정보 저장
                 CurStage = AngelStage[rndIndex];
