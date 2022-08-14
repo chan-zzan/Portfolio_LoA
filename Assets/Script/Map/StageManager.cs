@@ -193,6 +193,8 @@ public class StageManager : MonoBehaviour
         // 현재 방 번호를 표시
         CurStage.GetComponentInChildren<TMP_Text>().text = "" + curStageIndex;
 
+        // 현재 방의 몬스터들을 등장시킴
+        CurStage.Find("MonsterSpawn").gameObject.SetActive(true);
         
     }
 

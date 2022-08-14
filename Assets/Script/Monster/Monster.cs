@@ -32,7 +32,7 @@ public abstract class Monster : AIProperty
     private Vector3 RandomPos = Vector3.zero; // 랜덤 포지션
 
     // 로밍 제한 범위(맵 내에서만 이동)
-    private Vector2 AreaRange_X =  new Vector2(-3.5f, 3.5f);
+    private Vector2 AreaRange_X =  new Vector2(-4.5f, 4.5f);
     private Vector2 AreaRange_Z = new Vector2(-5.0f, 9.0f);
 
     protected abstract void IsAttack(Transform target); // 추상클래스를 이용해 부모에서는 선언하지 않고 자식에서만 해당 함수를 무조건 선언하도록 만듦
@@ -253,29 +253,40 @@ public abstract class Monster : AIProperty
         randomPos.x = roamingStartPos.x + Random.Range(randomRange_X.x, randomRange_X.y);
         randomPos.z = roamingStartPos.z + Random.Range(randomRange_Z.x, randomRange_Z.y);
 
-        // -3.5 < x < 3.5 : AreaRange_X
+        // -4.5 < x < 4.5 : AreaRange_X
         // -5.0 < z < 9.0 : AreaRange_Z
 
-        if (randomPos.x < AreaRange_X.x)
+        Vector3 basePos = this.transform.parent.position;
+        print(this.name + " basePos: " + basePos);
+
+        Vector2 curAreaRange_X = new Vector2(basePos.x, basePos.x) + AreaRange_X;
+        Vector2 curAreaRange_Z = new Vector2(basePos.z, basePos.z) + AreaRange_Z;
+
+        print(this.name + " AreaRange_X: " + curAreaRange_X);
+        print(this.name + " AreaRange_Z: " + curAreaRange_Z);
+
+        if (randomPos.x < curAreaRange_X.x)
         {
             // x축 음의 방향으로 제한 범위를 넘어간 경우 
-            randomPos.x = AreaRange_X.x;
+            randomPos.x = curAreaRange_X.x;
         }
-        else if (randomPos.x > AreaRange_X.y)
+        else if (randomPos.x > curAreaRange_X.y)
         {
             // x축 양의 방향으로 제한 범위를 넘어간 경우
-            randomPos.x = AreaRange_X.y;
+            randomPos.x = curAreaRange_X.y;
         }
-        else if (randomPos.z < AreaRange_Z.x)
+        else if (randomPos.z < curAreaRange_Z.x)
         {
             // z축 음의 방향으로 제한 범위를 넘어간 경우
-            randomPos.z = AreaRange_Z.x;
+            randomPos.z = curAreaRange_Z.x;
         }
-        else if (randomPos.z > AreaRange_Z.y)
+        else if (randomPos.z > curAreaRange_Z.y)
         {
             // z축 양의 방향으로 제한 범위를 넘어간 경우
-            randomPos.z = AreaRange_Z.y;
+            randomPos.z = curAreaRange_Z.y;
         }
+
+        print(this.name+  " : " + randomPos);
     }
 
     void Roaming()
