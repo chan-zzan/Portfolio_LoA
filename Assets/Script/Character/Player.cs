@@ -92,8 +92,14 @@ public class Player : Characteristic
         UpdateMaxExp(GetExp() * 0.3f); // 얻어야 하는 경험치량 증가
         UpdateMaxHP(GetMaxHP() * 0.2f); // 최대 hp 증가
 
-        UIManager.Instance.LevelText.text = "Lv. " + GetLv(); // 레벨 표시
+        UIManager.Instance.PlayerLevelText.text = "Lv. " + GetLv(); // 레벨 표시
         UIManager.Instance.SkillSelect.SetActive(true); // 레벨업시 스킬 획득
+
+        // 레벨업 이펙트
+        GameObject obj = Instantiate(UIManager.Instance.DmgEffect, UIManager.Instance.PlayerHPBar.transform.parent);
+        obj.GetComponentInChildren<TMP_Text>().color = new Color(0, 1, 1f, 1); // 청록색 글씨로 표현
+        obj.GetComponentInChildren<TMP_Text>().fontSize = 150.0f; // 폰트 크기 변경
+        obj.GetComponentInChildren<TMP_Text>().text = "Level UP!!";
     }
 
     public void UpdateATK(float data) => myStat.ATK += data;
@@ -121,7 +127,7 @@ public class Player : Characteristic
         {
             // 처음 시작하는 시점에 동작
             CurExp = 0.0f;
-            UIManager.Instance.LevelText.text = "Lv. " + GetLv();
+            UIManager.Instance.PlayerLevelText.text = "Lv. " + GetLv();
             UIManager.Instance.PlayerExpBar.value = CurExp.Value / GetExp();
 
             UIManager.Instance.SkillSelect.SetActive(true); // 처음 시작할때 스킬 획득
