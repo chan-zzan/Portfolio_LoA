@@ -14,7 +14,7 @@ public enum SkillName
     PowerUp,
     MoveSpeedUp,
     AttackSpeedUp,
-    ExpUP, // 10
+    ExpUp, // 10
     HPBoost,
     Rage,
     Fury,
@@ -61,7 +61,7 @@ public class SkillManager : MonoBehaviour
             case SkillName.AttackSpeedUp:
                 AttackSpeedUp();
                 break;
-            case SkillName.ExpUP:
+            case SkillName.ExpUp:
                 ExpUP();
                 break;
             case SkillName.HPBoost:
@@ -229,8 +229,8 @@ public class SkillManager : MonoBehaviour
     void ExpUP()
     {
         // 경험치 획득량 30퍼 증가, 최대레벨 2증가
-        Player.Instance.UpdateExp(-Player.Instance.GetExp() * 0.3f);
         Player.Instance.MaxLvUp(2);
+        Player.Instance.UpdateExp(-Player.Instance.GetExp() * 0.3f);
     }
 
     void HPBoost()

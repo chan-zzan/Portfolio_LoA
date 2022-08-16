@@ -194,7 +194,7 @@ public class CharacterMove : Characteristic
         {
             // °æÇèÄ¡ È¹µæ
             Destroy(other.transform.parent.gameObject);
-            Player.Instance.UpdateExp(10.0f);
+            Player.Instance.UpdateExp(5.0f);
         }
     }
 }

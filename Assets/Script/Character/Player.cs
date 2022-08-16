@@ -60,7 +60,7 @@ public class Player : Characteristic
     public bool onRage = false; // 분노 스킬 on/off
     public bool onFury = false; // 격노 스킬 on/off
 
-    int MaxLv = 10; // 최대 레벨
+    [SerializeField] int MaxLv = 3; // 최대 레벨
     float? CurHP = null; // 현재 체력
     float? CurExp = null; // 현재 경험치량
 
@@ -82,24 +82,31 @@ public class Player : Characteristic
 
     public void UpdateLv(int data)
     {
-        if (myStat.Lv >= MaxLv)
-        {
-            print("최대레벨 도달");
-            return;
-        }
+        myStat.Lv += data; // 레벨 상승
 
-        myStat.Lv += data;
         UpdateMaxExp(GetExp() * 0.3f); // 얻어야 하는 경험치량 증가
         UpdateMaxHP(GetMaxHP() * 0.2f); // 최대 hp 증가
 
-        UIManager.Instance.PlayerLevelText.text = "Lv. " + GetLv(); // 레벨 표시
+        if (GetLv() == MaxLv)
+        {
+            print("최대레벨 도달");
+            UIManager.Instance.PlayerLevelText.text = "Lv. Max"; // 레벨 표시
+        }
+        else
+        {
+            UIManager.Instance.PlayerLevelText.text = "Lv. " + GetLv(); // 레벨 표시
+        }
+
         UIManager.Instance.SkillSelect.SetActive(true); // 레벨업시 스킬 획득
 
-        // 레벨업 이펙트
+        // 레벨업 텍스트 이펙트
         GameObject obj = Instantiate(UIManager.Instance.DmgEffect, UIManager.Instance.PlayerHPBar.transform.parent);
         obj.GetComponentInChildren<TMP_Text>().color = new Color(0, 1, 1f, 1); // 청록색 글씨로 표현
         obj.GetComponentInChildren<TMP_Text>().fontSize = 150.0f; // 폰트 크기 변경
         obj.GetComponentInChildren<TMP_Text>().text = "Level UP!!";
+
+        // 레벨업 이펙트
+        this.GetComponentInChildren<ParticleSystem>().Play();
     }
 
     public void UpdateATK(float data) => myStat.ATK += data;
@@ -123,6 +130,12 @@ public class Player : Characteristic
 
     public void UpdateExp(float data = 0)
     {
+        // 최대레벨인 경우 경험치 획득x
+        if (GetLv() == MaxLv)
+        {
+            return;
+        }
+
         if (CurExp == null)
         {
             // 처음 시작하는 시점에 동작
@@ -135,8 +148,9 @@ public class Player : Characteristic
 
         CurExp += data;
 
+        // 레벨업
         if (CurExp >= GetExp())
-        {
+        {          
             CurExp -= GetExp();
             UpdateLv(1);
         }
@@ -282,19 +296,27 @@ public class Player : Characteristic
         // UI에 체력바 표시
         UIManager.Instance.PlayerHPBar.value = Mathf.Lerp(UIManager.Instance.PlayerHPBar.value, CurHP.Value / GetMaxHP(), Time.unscaledDeltaTime * 5.0f); // hp가 부드럽게 줄어들거나 늘어나도록 변경
 
-        // 현재 경험치 획득량 UI 표시
-        UIManager.Instance.PlayerExpBar.value = Mathf.Lerp(UIManager.Instance.PlayerExpBar.value, CurExp.Value / GetExp(), Time.unscaledDeltaTime * 5.0f); // exp가 부드럽게 줄어들거나 늘어나도록 변경
-
         if (OnHPEffect)
         {
             // hp효과
-            UIManager.Instance.PlayerHPEffectBar.value = Mathf.Lerp(UIManager.Instance.PlayerHPEffectBar.value, UIManager.Instance.PlayerHPBar.value, Time.unscaledDeltaTime * 5.0f); 
+            UIManager.Instance.PlayerHPEffectBar.value = Mathf.Lerp(UIManager.Instance.PlayerHPEffectBar.value, UIManager.Instance.PlayerHPBar.value, Time.unscaledDeltaTime * 5.0f);
 
             if (UIManager.Instance.PlayerHPEffectBar.value - 0.01f <= UIManager.Instance.PlayerHPBar.value)
             {
                 OnHPEffect = false;
                 UIManager.Instance.PlayerHPEffectBar.value = UIManager.Instance.PlayerHPBar.value;
             }
+        }
+
+        if (GetLv() == MaxLv)
+        {   
+            // 최대레벨 도달시 바를 꽉 채움
+            UIManager.Instance.PlayerExpBar.value = 1;
+        }
+        else
+        {
+            // 현재 경험치 획득량 UI 표시
+            UIManager.Instance.PlayerExpBar.value = Mathf.Lerp(UIManager.Instance.PlayerExpBar.value, CurExp.Value / GetExp(), Time.unscaledDeltaTime * 5.0f); // exp가 부드럽게 줄어들거나 늘어나도록 변경
         }
     }
 
@@ -378,6 +400,8 @@ public class Player : Characteristic
     public void MaxLvUp(int data)
     {
         MaxLv += data;
+
+        UIManager.Instance.PlayerLevelText.text = "Lv. " + GetLv(); // 레벨 표시
     }
 
     public void SaveATK()

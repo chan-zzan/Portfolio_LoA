@@ -95,7 +95,5 @@ public class UIManager : MonoBehaviour
     // 던전 넘어갈때 페이드 인/아웃 효과
     public Image FadeEffect;
 
-    // 레벨업 이펙트
-    public GameObject Effect_LvUP;
 
 }
