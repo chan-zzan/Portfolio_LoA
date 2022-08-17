@@ -60,7 +60,7 @@ public class Player : Characteristic
     public bool onRage = false; // 분노 스킬 on/off
     public bool onFury = false; // 격노 스킬 on/off
 
-    [SerializeField] int MaxLv = 3; // 최대 레벨
+    int MaxLv = 5; // 최대 레벨
     float? CurHP = null; // 현재 체력
     float? CurExp = null; // 현재 경험치량
 

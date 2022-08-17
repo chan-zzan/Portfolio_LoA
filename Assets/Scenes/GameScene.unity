@@ -6206,6 +6206,7 @@ MonoBehaviour:
   stageNum: {fileID: 1985162956}
   DmgEffect: {fileID: 8404280820571933734, guid: 4a65557b51ced3e4589702adda1d7cc5, type: 3}
   FadeEffect: {fileID: 577831394}
+  BloodEffect: {fileID: 1689045733345851199, guid: fcdfd8e05653ac242844f5ed40caadf3, type: 3}
 --- !u!4 &785524443
 Transform:
   m_ObjectHideFlags: 0
@@ -9514,7 +9515,7 @@ MonoBehaviour:
     Life: 2
     Lv: 1
     Exp: 100
-    ATK: 500
+    ATK: 50
     MaxHP: 1000
     ATK_SPEED: 2
     MOVE_SPEED: 5
@@ -9531,7 +9532,6 @@ MonoBehaviour:
   onPierceShot: 0
   onRage: 0
   onFury: 0
-  MaxLv: 5
 --- !u!114 &1255719083
 MonoBehaviour:
   m_ObjectHideFlags: 0

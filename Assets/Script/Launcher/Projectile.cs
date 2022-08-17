@@ -27,6 +27,10 @@ public class Projectile : MonoBehaviour
                     // 헤드샷 스킬이 활성화 되지 않은 경우
                     other.GetComponent<Monster>().OnDamage(Player.Instance.GetATK());
                 }
+
+                // 몬스터가 맞으면 피격 효과 발생
+                GameObject effect = Instantiate(UIManager.Instance.BloodEffect);
+                effect.transform.position = other.transform.position; // 몬스터의 위치로 발생위치를 변경
             }
 
             // 관통샷이 활성화 된 경우 -> 몬스터인 경우 오브젝트 삭제x
