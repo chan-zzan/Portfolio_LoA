@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SkillSelecter : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class SkillSelecter : MonoBehaviour
 
     [SerializeField] List<RectTransform> SlotObjects; // 스킬 이미지를 담고 있는 오브젝트
     [SerializeField] List<Sprite> UsingSprites; // 사용되는 sprite
+
+    [SerializeField] TMP_Text[] SkillName; // 스킬의 이름을 표시할 텍스트 배열
 
     //float slotSpeed = 6000.0f;
 
@@ -31,7 +34,6 @@ public class SkillSelecter : MonoBehaviour
         {
             SlotObjects[i].GetComponent<Animator>().enabled = false;
         }
-
 
         GameManager.Instance.PauseScene(); // 게임 일시정지
 
