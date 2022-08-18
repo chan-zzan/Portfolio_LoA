@@ -342,9 +342,10 @@ public class Player : Characteristic
             case State.GameOver:
                 //print("PlayerState : GameOver");
                 myAnim.SetBool("die", true);
+                myRigid.freezeRotation = true; // »∏¿¸ ∏ÿ√„
                 UIManager.Instance.EndingPanel.SetActive(true);
                 UIManager.Instance.stageNum.text = "" +  StageManager.Instance.GetStageIndex();
-                GameManager.Instance.PauseScene();
+                UIManager.Instance.EndingTitle.text = "GameOver";
                 break;
         }
     }

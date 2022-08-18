@@ -84,6 +84,8 @@ public class UIManager : MonoBehaviour
     // 스테이지 번호
     public TMP_Text stageNum;
 
+    // 엔딩 타이틀
+    public TMP_Text EndingTitle;
 
     // 이펙트 헤더
     [Space(10.0f)]

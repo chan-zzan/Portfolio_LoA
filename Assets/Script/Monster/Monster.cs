@@ -199,6 +199,7 @@ public abstract class Monster : AIProperty
                         // 마지막 보스가 죽은 경우
                         UIManager.Instance.EndingPanel.SetActive(true);
                         UIManager.Instance.stageNum.text = "" + StageManager.Instance.GetStageIndex();
+                        UIManager.Instance.EndingTitle.text = "Stage Clear";
                         GameManager.Instance.PauseScene();
                     }
 
