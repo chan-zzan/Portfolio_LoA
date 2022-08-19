@@ -29,10 +29,11 @@ public class SkillSelecter : MonoBehaviour
 
     private void OnEnable()
     {
-        // 애니메이션 끔
+        
         for (int i = 0; i < SlotObjects.Count; i++)
         {
-            SlotObjects[i].GetComponent<Animator>().enabled = false;
+            SlotObjects[i].GetComponent<Animator>().enabled = false; // 애니메이션 끔
+            SlotObjects[i].anchoredPosition3D = new Vector3(0, 1250.0f, 0); // 기본 위치로 세팅
         }
 
         GameManager.Instance.PauseScene(); // 게임 일시정지
@@ -62,22 +63,26 @@ public class SkillSelecter : MonoBehaviour
 
     IEnumerator SlotRotating(int slotNum, int stopPos, int rotateNum)
     {
+        RectTransform curSlot = SlotObjects[slotNum]; // 현재 슬롯
+        Vector3 curSlotPos = curSlot.anchoredPosition3D; // 현재 슬롯의 위치
+
         for (int i = 0; i < (perSlotItemNum * rotateNum * 2) + (stopPos * 2); i++) // (슬롯당 아이템 개수 x 회전수 x 그림이 바뀌는 횟수) + 멈출 위치(2단위)
         {
-            SlotObjects[slotNum].anchoredPosition3D -= new Vector3(0, 125.0f, 0);
+            curSlotPos -= new Vector3(0, 125.0f, 0);
 
-            if (SlotObjects[slotNum].anchoredPosition3D.y <= 125.0f)
+            if (curSlotPos.y <= 125.0f)
             {
-                SlotObjects[slotNum].anchoredPosition3D += new Vector3(0, 1250.0f, 0);
+                curSlotPos += new Vector3(0, 1250.0f, 0);
             }
 
-            Vector3 curPos = SlotObjects[slotNum].anchoredPosition3D; // 선택한 슬롯의 위치
-            int num = Mathf.RoundToInt(curPos.y / 10.0f) * 10; // 위치를 반올림해서 250단위로 맞춤
+            SlotObjects[slotNum].anchoredPosition3D = curSlotPos; // 실제 슬롯의 위치 변경
 
-             // 선택한 스킬의 sprite를 저장
-            Sprite curSprite = SlotObjects[slotNum].GetComponentsInChildren<Image>()[num / 250].sprite;
-
-            SkillName[slotNum].text = "" + curSprite.name; // 스킬 이름 표시
+            // 스킬 이미지가 딱 맞을 경우에 해당 이미지에 해당하는 스킬이름이 나오도록 함
+            if (curSlotPos.y % 250 == 0)
+            {
+                print(slotNum + " : " + curSlotPos.y / 250);
+                SkillName[slotNum].text = "" + curSlot.GetComponentsInChildren<Image>()[(int)(curSlotPos.y / 250)].sprite.name; // 스킬 이름 표시
+            }
 
             yield return null;
         }

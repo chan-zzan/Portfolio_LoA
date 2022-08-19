@@ -9517,7 +9517,7 @@ MonoBehaviour:
     Life: 1
     Lv: 1
     Exp: 100
-    ATK: 50
+    ATK: 500
     MaxHP: 300
     ATK_SPEED: 2
     MOVE_SPEED: 5
