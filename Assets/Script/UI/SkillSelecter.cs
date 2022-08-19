@@ -71,6 +71,14 @@ public class SkillSelecter : MonoBehaviour
                 SlotObjects[slotNum].anchoredPosition3D += new Vector3(0, 1250.0f, 0);
             }
 
+            Vector3 curPos = SlotObjects[slotNum].anchoredPosition3D; // 선택한 슬롯의 위치
+            int num = Mathf.RoundToInt(curPos.y / 10.0f) * 10; // 위치를 반올림해서 250단위로 맞춤
+
+             // 선택한 스킬의 sprite를 저장
+            Sprite curSprite = SlotObjects[slotNum].GetComponentsInChildren<Image>()[num / 250].sprite;
+
+            SkillName[slotNum].text = "" + curSprite.name; // 스킬 이름 표시
+
             yield return null;
         }
 
